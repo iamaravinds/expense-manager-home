@@ -1,4 +1,4 @@
-# expence-manager
+# Expence Manager Home
 
 ## Project setup
 ```
@@ -19,6 +19,8 @@ npm run build
 ```
 npm run lint
 ```
+
+Application hosted [here](https://expense-manager-home.firebaseapp.com/)
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
