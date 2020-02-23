@@ -14,6 +14,7 @@
             </tr>
         </table>
       </div>
+    <ModalEditTransaction v-if="showModal" v-on:close="close" :editTransaction="editTransaction" :showModal="showModal"></ModalEditTransaction>
     <div class="expense-table">
       <table>
         <tr class="table-data" v-for="transaction in transactions" :key="transaction">
@@ -41,7 +42,7 @@
           </td>
           <td>
             <div class="table-transaction-data">
-              <Button class="edit-button">
+              <Button class="edit-button" @click="showModalPop(transaction)">
                 <img src="../assets/edit.png" alt="edit" height="10px" />
               </Button>
             </div>
@@ -53,16 +54,29 @@
 </template>
 
 <script>
+import ModalEditTransaction from "@/modals/ModalEditTransaction";
 export default {
   name: "ViewRecords",
+  components:{ ModalEditTransaction },
   data() {
     return {
+      showModal: false,
       transactions: {},
       transactionArray:[],
-      loading: true
+      loading: true,
+      editTransaction : null
     };
   },
   methods: {
+      close(){
+          this.showModal = false;
+          this.editTransaction = null;
+      },
+    showModalPop(transaction){
+        this.showModal = true;
+        this.editTransaction= transaction;
+        this.$modal.show('ModalEditTransaction');
+    },
     getAllTransactions() {
       this.$dbService.Transaction.getAllTransaction(this.transactionsCallback);
     },

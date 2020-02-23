@@ -9,6 +9,10 @@ class TransactionService extends FirebaseService {
     async addTransaction(data) {
          return this.database.push(data).key;
     }
+    
+    async updateTransaction(data) {
+        return this.database.child(data.id).update(data);
+    }
     getAllTransaction(callback) {
         return this.database.on('value',callback);
     }

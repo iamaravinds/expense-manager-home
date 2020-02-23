@@ -83,13 +83,6 @@
                     </button>
                 </DatePicker>
 
-              <input
-                type="date"
-                name="expense-date"
-                id="expense-date"
-                class="form-text-box"
-                v-model="transaction.date"
-              />
             </td>
           </tr>
           <tr>
@@ -136,13 +129,11 @@ export default {
       }
     };
   },
+  props:{
+      editTransaction: Object,
+      edit: Boolean
+  },
   methods: {
-    datePicker(){
-        let dateElement = document.getElementById('expense-date');
-        console.log(dateElement);
-      document.getElementById('expense-date').style.display='block';
-      
-    },
     async saveData() {
       if (
         this.transaction.by &&
@@ -153,23 +144,36 @@ export default {
       ) {
         console.log(this.transaction);
         let formatStr = this.transaction.date;
-        console.log(typeof formatStr);
         formatStr = formatStr.toISOString();
-        console.log(formatStr.substr(0,10));
         
         this.transaction.date = formatStr.substr(0,10)
         this.transaction.created = Date.now();
         this.transaction.value = parseFloat(this.transaction.value, 10);
-        const key = await this.$dbService.Transaction.addTransaction(
-          this.transaction
-        ).then(value => {
-          return value;
-        });
-        this.$notify({
-          group: "success",
-          title: "Transaction Saved",
-          text: `Transaction saved with ID ${key}`
-        });
+        if (this.edit) {
+            await this.$dbService.Transaction.updateTransaction(
+              this.transaction
+            ).then( () => {
+                this.transaction = {};
+                this.$notify({
+                    group: "success",
+                    title: "Transaction Updated",
+                    text: "Transaction updated"
+                });
+                this.$emit('updateClose');
+            });
+        } else {
+            const key = await this.$dbService.Transaction.addTransaction(
+              this.transaction
+            ).then(value => {
+              return value;
+            });
+            this.$notify({
+              group: "success",
+              title: "Transaction Saved",
+              text: `Transaction saved with ID ${key}`
+            });
+
+        }
       } else {
         console.log("Error");
 
@@ -182,6 +186,9 @@ export default {
     }
   },
   mounted(){
+      if(this.editTransaction) {
+          this.transaction = this.editTransaction;
+      }
   }
 };
 </script>
