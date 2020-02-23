@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <notifications group="success" />
+    <notifications group="error" />
     <div id="nav">
       <!-- <router-link to="/">Home</router-link> | -->
       <router-link to="/">Records</router-link> |
@@ -9,7 +11,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

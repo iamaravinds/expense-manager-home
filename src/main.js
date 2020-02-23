@@ -2,11 +2,16 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import firebase from 'firebase';
-import config from './config';
+import dbService from "./service/dbService";
+import FirebaseService from './service/firebaseService'
+import Notifications from 'vue-notification'
+import Tabs from 'vue-tabs-component';
 
+FirebaseService.init();
+Vue.use(Notifications);
+Vue.use(Tabs);
+Vue.prototype.$dbService = dbService;
 Vue.config.productionTip = false
-firebase.initializeApp(config.firebase);
 new Vue({
   router,
   store,

@@ -16,7 +16,7 @@ const routes = [
     path: '/',
     name: 'Records',
     component: () => import(/* webpackChunkName: "records" */ '../views/Records.vue')
-  },
+  }
 ]
 
 const router = new VueRouter({
