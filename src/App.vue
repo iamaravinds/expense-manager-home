@@ -1,4 +1,5 @@
 <template>
+
   <div id="app">
     <notifications group="success" />
     <notifications group="error" />
