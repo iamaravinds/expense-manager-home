@@ -1,9 +1,11 @@
 <template>
   <div class="view-container">
       <div>
-        <table class="expense-table-head">
+        <b-table striped hover :fields="fields" :items="transactionArray" :sticky-header="true" :no-border-collapse="true">
+          
+        </b-table>
+        <!-- <table class="expense-table-head">
             <tr class="table-head">
-                <!-- <td class="table-head-data">Transaction Id</td> -->
                 <td><div class="table-head-data">Type</div></td>
                 <td><div class="table-head-data">Expense</div></td>
                 <td><div class="table-head-data">Value</div></td>
@@ -12,11 +14,11 @@
                 <td><div class="table-head-data">Spent By</div></td>
                 <td><div class="table-head-data">Action</div></td>
             </tr>
-        </table>
+        </table> -->
       </div>
     <ModalEditTransaction v-if="showModal" v-on:close="close" :editTransaction="editTransaction" :showModal="showModal"></ModalEditTransaction>
     <div class="expense-table">
-      <table>
+      <table v-if="false">
         <tr class="table-data" v-for="transaction in transactions" :key="transaction">
           <!-- <td ><div class="table-transaction-data">{{transaction.id}}</div></td> -->
           <td>
@@ -64,7 +66,15 @@ export default {
       transactions: {},
       transactionArray:[],
       loading: true,
-      editTransaction : null
+      editTransaction : null,
+      fields: ['type', 'expense', 'value', 'category', 'date', 'spent_by'],
+      tableData: [{
+        expenseName:null,
+        value:null,
+        category:null,
+        date:null,
+        by:null
+      }]
     };
   },
   methods: {
@@ -85,6 +95,16 @@ export default {
       this.transactions = snap.val();
       Object.keys(this.transactions).forEach(transaction => {
         this.transactions[transaction].id = transaction;
+        'type', 'expense', 'value', 'category', 'date', 'spent_by'
+        this.transactionArray.push({
+          type: this.transactions[transaction].type === 'expense' ? 'EXP': 'INC',
+          expense: this.transactions[transaction].expenseName,
+          value: this.transactions[transaction].value,
+          category: this.transactions[transaction].category,
+          date: this.transactions[transaction].date,
+          spent_by: this.transactions[transaction].by,
+          id: this.transactions[transaction].id
+        })
       });
       this.loading = false;
 

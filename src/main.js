@@ -7,8 +7,12 @@ import FirebaseService from './service/firebaseService'
 import Notifications from 'vue-notification'
 import Tabs from 'vue-tabs-component';
 import VModal from 'vue-js-modal';
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 FirebaseService.init();
+Vue.use(BootstrapVue);
 Vue.use(Notifications);
 Vue.use(Tabs);
 Vue.use(VModal, { dialog: true });

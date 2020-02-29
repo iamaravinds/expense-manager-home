@@ -1,24 +1,30 @@
 <template>
-  <div class="records">
-    <div>
-      <tabs cache-lifetime="100" :options="{ useUrlFragment: false }">
-        <tab name="Add Transactions">
-          <Transactions />
-        </tab>
-        <tab name="View Records">
-          <ViewRecords />
-        </tab>
-      </tabs>
+<MainLayout>
+  <template slot="content">
+    <div class="records">
+      <div>
+        <b-tabs cache-lifetime="100" :options="{ useUrlFragment: false }">
+          <b-tab title="Add Transactions" active>
+            <Transactions />
+          </b-tab>
+          <b-tab title="View Records">
+            <ViewRecords />
+          </b-tab>
+        </b-tabs>
+      </div>
     </div>
-  </div>
+  </template>
+</MainLayout>
+  
 </template>
 
 <script>
 import Transactions from "@/components/Transactions.vue";
 import ViewRecords from "@/components/ViewRecords.vue";
+import MainLayout from "@/layout/MainLayout.vue";
 export default {
   name: "Records",
-  components: { Transactions, ViewRecords }
+  components: { Transactions, ViewRecords, MainLayout }
 };
 </script>
 
