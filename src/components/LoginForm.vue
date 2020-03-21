@@ -1,6 +1,6 @@
 <template>
     <div class="login-form">
-        <b-form> 
+        <b-form v-if="mode ==='signin'"> 
             <b-form-group
                 id="input-group-1"
                 label="Username:"
@@ -25,11 +25,78 @@
             <b-form-group
                 id="input-group-3">
                <b-button variant="faded" class="login-buttons" @click="login">Login</b-button>
-               <b-button variant="faded" class="login-buttons" >SignUp</b-button>
+               <b-button variant="faded" class="login-buttons" @click="mode = 'signup'">SignUp</b-button>
             </b-form-group>
             <span class="form-forgot-password">
                 Forgot Password?
             </span>
+        </b-form>
+        <b-form v-else>
+            <b-form-group
+                id="input-group-1"
+                label="First Name:"
+                label-for="input-1"
+            >
+                <b-form-input
+                id="input-1"
+                v-model="newUser.firstname"
+                type="text"
+                required
+                placeholder="First Name"
+                ></b-form-input>
+            </b-form-group>
+                <b-form-group
+                id="input-group-1"
+                label="Last Name:"
+                label-for="input-1"
+            >
+                <b-form-input
+                id="input-1"
+                v-model="newUser.lastname"
+                type="text"
+                required
+                placeholder="Last Name"
+                ></b-form-input>
+            </b-form-group>
+             <b-form-group
+                id="input-group-1"
+                label="email:"
+                label-for="input-1"
+            >
+                <b-form-input
+                id="input-1"
+                v-model="newUser.email"
+                type="text"
+                required
+                placeholder="email"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group
+                id="input-group-1"
+                label="UserId:"
+                label-for="input-1"
+            >
+                <b-form-input
+                id="input-1"
+                v-model="newUser.userId"
+                type="text"
+                required
+                placeholder="userId"
+                ></b-form-input>
+            </b-form-group>
+            <b-form-group
+            label="Password:"
+            id="input-group-2">
+                <b-input type="password" id="text-password" aria-describedby="password-help-block" placeholder="password" v-model="newUser.password">
+                </b-input>
+                <b-form-text id="password-help-block">
+                </b-form-text>
+            </b-form-group>
+            <b-form-group
+                id="input-group-3">
+               <b-button variant="faded" class="login-buttons" @click="mode = 'signin'">Login</b-button>
+               <b-button variant="faded" class="login-buttons" @click="signUp">SignUp</b-button>
+            </b-form-group>
         </b-form>
     </div>
 </template>
@@ -42,7 +109,15 @@ export default {
         user:{
             email:'',
             password:''
-        }
+        },
+        newUser:{
+            firstname:'',
+            lastname:'',
+            userId:'',
+            email:'',
+            password:''
+        },
+        mode: 'signin'
     };
   },
   methods: {
@@ -50,6 +125,35 @@ export default {
           if(this.user.email === 'dev' && this.user.password === 'root') {
               this.$router.push({ path: '/records' })
           }
+      },
+      async signUp(){
+          const signUpObj = {
+                firstName: this.newUser.firstname,
+                lastName:this.newUser.lastname,
+                uid: this.newUser.userId,
+                password: this.newUser.password,
+                email:this.newUser.email
+          }
+         const response = await this.$dbService.User.signUp(signUpObj);
+         if (response.result === "User Already Present") {
+             this.$notify({
+               group: "error",
+               title: "User already present",
+               text: "Please login to access your account"
+             });
+         } else if(response.result === 'error') {
+            this.$notify({
+               group: "error",
+               title: "Error creating user",
+               text: "Please check the inputs"
+             });
+         } else {
+             this.$notify({
+               group: "success",
+               title: "User Created",
+               text: "Please login now"
+             });
+         }
       }
   },
   created() {},
