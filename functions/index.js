@@ -14,53 +14,53 @@ const database = admin.database();
 
 const generateHash = password => {
     return crypto.createHash('RSA-SHA1')
-     .update(password)
-     .digest('hex');
+        .update(password)
+        .digest('hex');
 
 };
 const emailAlreadyPresent = async uid => {
     const existingVal = await database.ref('users')
         .child(uid)
         .once("value")
-        .then((snap) => { return (snap.exists() ? snap.val():null)});
-    if(existingVal) return true;
+        .then((snap) => { return (snap.exists() ? snap.val() : null) });
+    if (existingVal) return true;
     return false;
 };
 
-exports.createUser = functions.https.onRequest(async (request, response) => {
+exports.createUser = functions.https.onCall((data, context) => {
     try {
-        const { firstName, lastName, email, password, uid } = request.body;
-        let existingUser = await emailAlreadyPresent(uid);
-        if(existingUser) {
-            response.send("User Already Present");
-            return null;
-        } else {
-            admin
-            .auth()
-            .createUser({email, password, uid})
-            .then(()=> {
-                const setObject = {
-                    firstName,
-                    lastName,
-                    email,
-                    createdAt: Date.now(),
-                    passwordHash: generateHash(password)
-                };
-                database.ref('users').child(uid).set(setObject);
+        return new Promise(async (resolve, reject) => {
+            const { firstName, lastName, email, password, uid } = data;
+            let existingUser = await emailAlreadyPresent(uid);
+            if (existingUser) {
+                resolve("User Already Present");
                 return null;
-            })
-            .catch((error) => {
-                // Handle Errors here.
-                let errorCode = error.code;
-                let errorMessage = error.message;
-                // ...
-                console.log(error);
-                
-            }); 
-            response.send("User Created");
-        }
+            } else {
+                admin
+                    .auth()
+                    .createUser({ email, password, uid })
+                    .then(() => {
+                        const setObject = {
+                            firstName,
+                            lastName,
+                            email,
+                            createdAt: Date.now(),
+                            passwordHash: generateHash(password)
+                        };
+                        database.ref('users').child(uid).set(setObject);
+                        return null;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        resolve('error');
+
+                    });
+                resolve("User Created");
+                return null;
+            }
+        });
     } catch (error) {
         console.log(error);
     }
     return null;
-    });
+});
