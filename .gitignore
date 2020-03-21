@@ -24,3 +24,4 @@ package-lock.json
 functions/service-account.json
 yarn.lock
 functions/config/index.json
+.env.staging
