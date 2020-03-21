@@ -4,6 +4,7 @@
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase serve --only functions",
+    "build": "firebase functions:config:set config=\"$(cat config/index.json)\"",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -13,8 +14,10 @@
     "node": "8"
   },
   "dependencies": {
+    "crypto": "^1.0.1",
     "firebase-admin": "^8.6.0",
-    "firebase-functions": "^3.3.0"
+    "firebase-functions": "^3.3.0",
+    "generate-password": "^1.5.1"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
