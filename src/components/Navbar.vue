@@ -14,7 +14,7 @@
         </b-nav-form>
         <b-nav-item href="/about">About</b-nav-item>
         <b-nav-item href="#">Profile</b-nav-item>
-        <b-nav-item to="/">Sign Out</b-nav-item>
+        <b-nav-item to="/" @click="signOut">Sign Out</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -24,7 +24,14 @@
 
 <script>
 export default {
-    name: 'Navbar'
+    name: 'Navbar',
+    methods: {
+      async signOut() {
+        const response = await this.$dbService.User.userSignOut();
+        console.log(response);
+        
+      }
+    }
 }
 </script>
 

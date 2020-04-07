@@ -3,6 +3,7 @@
   <div id="app">
     <notifications group="success" />
     <notifications group="error" />
+    <notifications group="warn" />
       <router-view/>
   </div>
 </template>

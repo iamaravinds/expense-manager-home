@@ -13,7 +13,7 @@ admin.initializeApp({
 const database = admin.database();
 
 const generateHash = password => {
-    return crypto.createHash('RSA-SHA1')
+    return crypto.createHash('SHA1')
         .update(password)
         .digest('hex');
 
@@ -36,10 +36,12 @@ exports.createUser = functions.https.onCall((data, context) => {
                 resolve("User Already Present");
                 return null;
             } else {
+                let resp = {};
                 admin
                     .auth()
                     .createUser({ email, password, uid })
-                    .then(() => {
+                    .then((response) => {
+                        resp = response;
                         const setObject = {
                             firstName,
                             lastName,
@@ -52,10 +54,12 @@ exports.createUser = functions.https.onCall((data, context) => {
                     })
                     .catch((error) => {
                         console.log(error);
-                        resolve('error');
+                        resp = error;
+                        resolve(resp);
+                        return null;
 
                     });
-                resolve("User Created");
+                resolve(resp);
                 return null;
             }
         });

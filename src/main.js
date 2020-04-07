@@ -11,7 +11,18 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-FirebaseService.init();
+const firebase = FirebaseService.init();
+firebase.auth.onAuthStateChanged(function(user) {
+  if (user) {
+     console.log('User is signed in.', user);
+     store.dispatch('setCurrentUser',user)
+
+  } else {
+    console.log('No user is signed in.');
+  }
+});
+
+
 Vue.use(BootstrapVue);
 Vue.use(Notifications);
 Vue.use(Tabs);

@@ -8,7 +8,7 @@
             >
                 <b-form-input
                 id="input-1"
-                v-model="user.email"
+                v-model="user.uid"
                 type="text"
                 required
                 placeholder="username"
@@ -102,12 +102,13 @@
 </template>
 
 <script>
+import { generateHash } from "../helpers/utils";
 export default {
     name: 'LoginForm',
      data() {
     return {
         user:{
-            email:'',
+            uid:'',
             password:''
         },
         newUser:{
@@ -121,10 +122,11 @@ export default {
     };
   },
   methods: {
-      login() {
-          if(this.user.email === 'dev' && this.user.password === 'root') {
-              this.$router.push({ path: '/records' })
-          }
+      async login() {
+          await this.signIn();
+        //   if(this.user.email === 'dev' && this.user.password === 'root') {
+        //       this.$router.push({ path: '/records' })
+        //   }
       },
       async signUp(){
           const signUpObj = {
@@ -154,6 +156,13 @@ export default {
                text: "Please login now"
              });
          }
+      },
+      async signIn() {
+        if(this.user.password) {
+            let hashedPassword = generateHash(this.user.password);
+            const response = await this.$dbService.User.signIn(this.user.uid, hashedPassword, this.user.password);
+            console.log(response);
+        }
       }
   },
   created() {},
