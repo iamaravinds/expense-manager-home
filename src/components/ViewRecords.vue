@@ -1,6 +1,7 @@
 <template>
+<b-container>
   <div class="view-container">
-      <div>
+      <div v-if="transactionArray.length > 0">
         <b-table striped hover :fields="fields" :items="transactionArray" :sticky-header="true" :no-border-collapse="true">
           
         </b-table>
@@ -15,6 +16,9 @@
                 <td><div class="table-head-data">Action</div></td>
             </tr>
         </table> -->
+      </div>
+      <div v-else class="empty-records">
+        <div>What a Void!</div><div>No Records Yet</div>
       </div>
     <ModalEditTransaction v-if="showModal" v-on:close="close" :editTransaction="editTransaction" :showModal="showModal"></ModalEditTransaction>
     <div class="expense-table">
@@ -53,6 +57,7 @@
       </table>
     </div>
   </div>
+</b-container>
 </template>
 
 <script>
@@ -93,19 +98,23 @@ export default {
     transactionsCallback(snap) {
       this.loading = true;
       this.transactions = snap.val();
-      Object.keys(this.transactions).forEach(transaction => {
-        this.transactions[transaction].id = transaction;
-        'type', 'expense', 'value', 'category', 'date', 'spent_by'
-        this.transactionArray.push({
-          type: this.transactions[transaction].type === 'expense' ? 'EXP': 'INC',
-          expense: this.transactions[transaction].expenseName,
-          value: this.transactions[transaction].value,
-          category: this.transactions[transaction].category,
-          date: this.transactions[transaction].date,
-          spent_by: this.transactions[transaction].by,
-          id: this.transactions[transaction].id
-        })
-      });
+      if (this.transactions) {
+        Object.keys(this.transactions).forEach(transaction => {
+          this.transactions[transaction].id = transaction;
+          'type', 'expense', 'value', 'category', 'date', 'spent_by'
+          this.transactionArray.push({
+            type: this.transactions[transaction].type === 'expense' ? 'EXP': 'INC',
+            expense: this.transactions[transaction].expenseName,
+            value: this.transactions[transaction].value,
+            category: this.transactions[transaction].category,
+            date: this.transactions[transaction].date,
+            spent_by: this.transactions[transaction].by,
+            id: this.transactions[transaction].id
+          })
+        });
+      } else {
+        console.log('No records');
+      }
       this.loading = false;
 
     }
@@ -181,5 +190,10 @@ export default {
 .income-text {
   color: green;
   font-weight: bold;
+}
+.empty-records{
+  margin-top: 100px;
+  text-align: center;
+  font-size: 24px;
 }
 </style>

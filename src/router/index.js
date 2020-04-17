@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import Login from '../pages/Login.vue';
 const routes = [
+
   {
     path: '/about',
     name: 'About',
@@ -20,8 +21,8 @@ const routes = [
   },
   {
     path: '/',
-        name: 'Login',
-        component: Login
+    name: 'Login',
+    component: Login
   }
 ]
 

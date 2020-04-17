@@ -8,6 +8,14 @@ class UserService extends FirebaseService {
         this.database = firebase.db.ref('users');
         this.functions = firebase.functions;
     }
+    async getUserData(uid) {
+        const userDataRef = this.database.child(uid);
+        const userData = await userDataRef.once('value').then(snap => snap.exists()? snap.val(): {});
+        delete userData.passwordHash;
+        userData.fullName = `${userData.firstName} ${userData.lastName}`
+        console.log(userData);
+        return userData;
+    }
     async signUp(data) {
         const createUser = this.functions. httpsCallable('createUser');
         const response = await createUser(data);

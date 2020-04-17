@@ -4,7 +4,7 @@ class TransactionService extends FirebaseService {
     constructor() {
         super();
         const firebase = this.constructor.init();
-        this.database = firebase.db.ref('Transactions');
+        this.database = firebase.db.ref('transactions');
     }
     async addTransaction(data) {
          return this.database.push(data).key;

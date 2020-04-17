@@ -1,18 +1,17 @@
 <template>
 <MainLayout>
+  <template slot="navBar"></template>
   <template slot="content">
-    <div class="records">
-      <div>
-        <b-tabs cache-lifetime="100" :options="{ useUrlFragment: false }">
-          <b-tab title="Add Transactions" active>
-            <Transactions />
-          </b-tab>
-          <b-tab title="View Records">
-            <ViewRecords />
-          </b-tab>
-        </b-tabs>
-      </div>
-    </div>
+    <b-container>
+      <b-tabs cache-lifetime="100" :options="{ useUrlFragment: false }">
+        <b-tab title="Add Transactions" active>
+          <Transactions />
+        </b-tab>
+        <b-tab title="View Records">
+          <ViewRecords />
+        </b-tab>
+      </b-tabs>
+    </b-container>
   </template>
 </MainLayout>
   
@@ -29,8 +28,7 @@ export default {
 </script>
 
 <style>
-.tabs-component {
-  width: 80%;
+/* .tabs-component {
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
@@ -115,5 +113,5 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     padding:  1em 0em;
   }
-}
+} */
 </style>

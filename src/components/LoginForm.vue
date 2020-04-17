@@ -162,6 +162,7 @@ export default {
             let hashedPassword = generateHash(this.user.password);
             const response = await this.$dbService.User.signIn(this.user.uid, hashedPassword, this.user.password);
             console.log(response);
+            if(response) this.$router.push({ path: '/records' });
         }
       }
   },
