@@ -13,9 +13,9 @@
                 </div>
               </div>
               <div class="social-media-links">
-                <div>Facebook</div>
-                <div>Twitter</div>
-                <div>LinkedIn</div>
+                <a href="https://www.facebook.com/iamaravinds">Facebook</a> | 
+                <a href="https://twitter.com/Iamaravinds">Twitter</a> | 
+                <a href="https://www.linkedin.com/in/aravind1994/">LinkedIn</a>
               </div>
             </b-container>
         </template>
@@ -44,10 +44,30 @@ export default {
   border-radius: 50%;
   border: lightgray solid 5px;
 }
-.social-media-links{
-  /* display: flex; */
+
+.developer-photo:hover{
+  
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border: orange solid 10px;
+  transition: 0.3s ease-in-out;;
+  transform: scale(1.8);
+  
 }
-.social-media-links > div {
+
+
+.social-media-links > a {
   margin-left: 10px;
+  
+}
+.social-media-links > a:hover {
+  color: white;
+  background: black;
+  border: 2px solid red;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 20px;
+  transition: 0.3s;
+  transform: scale(3);
 }
 </style>

@@ -2,20 +2,47 @@
 <b-container>
   <div class="view-container">
       <div v-if="transactionArray.length > 0">
-        <b-table striped hover :fields="fields" :items="transactionArray" :sticky-header="true" :no-border-collapse="true">
+        <!-- <b-table 
+          striped 
+          hover 
+          :fields="fields" 
+          :items="transactionArray" 
+          :sticky-header="true" 
+          :no-border-collapse="true"
+          sort-icon-left
+          responsive="sm"
+        >
+        </b-table> -->
+        <div>Transaction History</div>
+      <b-table-simple hover small caption-top responsive>
+        <b-thead head-variant="dark">
+          <b-tr>
+            <b-th >Expense</b-th>
+            <b-th >Value</b-th>
+            <b-th >Category</b-th>
+            <b-th >Date</b-th>
+          </b-tr>
+        </b-thead>
+        <b-tbody>
           
-        </b-table>
-        <!-- <table class="expense-table-head">
-            <tr class="table-head">
-                <td><div class="table-head-data">Type</div></td>
-                <td><div class="table-head-data">Expense</div></td>
-                <td><div class="table-head-data">Value</div></td>
-                <td><div class="table-head-data">Category</div></td>
-                <td><div class="table-head-data">Date</div></td>
-                <td><div class="table-head-data">Spent By</div></td>
-                <td><div class="table-head-data">Action</div></td>
-            </tr>
-        </table> -->
+          <b-tr v-for="field in transactionArray" :key="field"  
+            :style="{ color: field.color}"
+        >
+            <b-td>{{field.expense}}</b-td>
+            <b-td>{{field.value}}</b-td>
+            <b-td>{{field.category}}</b-td>
+            <b-td>{{dateFormatter(field.date)}}</b-td>
+          </b-tr>
+          
+        </b-tbody>
+        <b-tfoot>
+          <b-tr>
+            <b-td colspan="7" variant="secondary" class="text-right">
+              Total Rows: <b>{{transactionArray.length}}</b>
+            </b-td>
+          </b-tr>
+        </b-tfoot>
+      </b-table-simple>
       </div>
       <div v-else class="empty-records">
         <div>What a Void!</div><div>No Records Yet</div>
@@ -62,9 +89,32 @@
 
 <script>
 import ModalEditTransaction from "@/modals/ModalEditTransaction";
+import { mapGetters } from 'vuex'
 export default {
   name: "ViewRecords",
   components:{ ModalEditTransaction },
+  computed:{
+      ...mapGetters([
+      'getCurrentUser'
+      // ...
+    ]),
+    incOrExp(type){
+      return type==='E'? "danger" : "success";
+    },
+    classObject(color) {
+      return {
+        color: color
+      }
+    },
+    dateFormatter(){
+      return date => `${new Date(date).getDate()}/${(new Date(date).getMonth()+1)}/${new Date(date).getFullYear()}`;
+    }
+    },
+    watch:{
+      getCurrentUser() {
+        this.updateTransactionData();
+      }
+    },
   data() {
     return {
       showModal: false,
@@ -72,7 +122,7 @@ export default {
       transactionArray:[],
       loading: true,
       editTransaction : null,
-      fields: ['type', 'expense', 'value', 'category', 'date', 'spent_by'],
+      fields: [{key:'type', sortable:true}, 'expense', 'value', {key:'category', sortable:true}, {key:'date', sortable:true}],
       tableData: [{
         expenseName:null,
         value:null,
@@ -83,9 +133,9 @@ export default {
     };
   },
   methods: {
-      close(){
-          this.showModal = false;
-          this.editTransaction = null;
+    close(){
+      this.showModal = false;
+      this.editTransaction = null;
       },
     showModalPop(transaction){
         this.showModal = true;
@@ -98,25 +148,37 @@ export default {
     transactionsCallback(snap) {
       this.loading = true;
       this.transactions = snap.val();
+      this.updateTransactionData();
+      this.loading = false;
+
+    },
+    updateTransactionData() {
+      this.transactionArray = [];
       if (this.transactions) {
         Object.keys(this.transactions).forEach(transaction => {
-          this.transactions[transaction].id = transaction;
-          'type', 'expense', 'value', 'category', 'date', 'spent_by'
-          this.transactionArray.push({
-            type: this.transactions[transaction].type === 'expense' ? 'EXP': 'INC',
-            expense: this.transactions[transaction].expenseName,
-            value: this.transactions[transaction].value,
-            category: this.transactions[transaction].category,
-            date: this.transactions[transaction].date,
-            spent_by: this.transactions[transaction].by,
-            id: this.transactions[transaction].id
-          })
+          
+          if (this.getCurrentUser && this.transactions){
+            if(this.transactions[transaction].by === this.getCurrentUser.id) {
+             this.transactions[transaction].id = transaction;
+              const pushObj = {
+               type: this.transactions[transaction].type === 'expense' ? 'E': 'I',
+               expense: this.transactions[transaction].expenseName,
+               value: this.transactions[transaction].value,
+               category: this.transactions[transaction].category,
+               date: this.transactions[transaction].date,
+               id: this.transactions[transaction].id,
+               color: (this.transactions[transaction].type === 'expense') ? '#FD7272': '#0D8800'
+             }
+             this.transactionArray.push(pushObj)
+             this.transactionArray.sort(function(a, b) {
+                return b.date-a.date
+            })
+           }
+          }
         });
       } else {
         console.log('No records');
       }
-      this.loading = false;
-
     }
   },
   mounted() {
@@ -128,7 +190,11 @@ export default {
 
 <style scoped>
 .view-container {
-  padding: 1px;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+
 }
 .expense-table {
   padding: 1px;
@@ -137,15 +203,12 @@ export default {
   margin-top: 20px;
   min-width: 276px;
   border-radius: 10px;
-  width: 550px;
+  /* width: 550px; */
   overflow-y: auto;
   height: 300px;
 }
 .expense-table-head {
   padding: 1px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
   min-width: 276px;
   border-radius: 10px;
   width: 550px;

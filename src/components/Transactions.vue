@@ -1,6 +1,5 @@
 <template>
   <b-container>
-    
     <div class="transactions">
       <b-form  v-on:submit.prevent class="form-wrapper">
         <b-container class="heading">
@@ -20,7 +19,6 @@
               </b-col>
               <b-col>
                 <b-form-input
-                  
                   type="text"
                   name="expense-name"
                   id="expense-name"
@@ -65,52 +63,15 @@
               </b-col>
               <b-col>
                 <b-row class="date-box">
-                  <b-col>
-                    <b-form-datepicker value-as-date button-only dropleft v-model="transaction.date"></b-form-datepicker>
-                    <!-- <DatePicker
-                    class="expense-date-picker"
-                      id="expense-category"
-                          v-model="transaction.date"
-                          :popover="{ placement: 'bottom', visibility: 'click' }">
-                          <button class="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded focus:outline-none date-button">
-                              <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  class="w-4 h-4 fill-current"
-                                  height="25px">
-                                  <path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z" />
-                              </svg>
-                          </button>
-                      </DatePicker> -->
-                  </b-col>
+                  <!-- <b-col> -->
+                    <div class="date-align">
+                      <b-form-datepicker value-as-date button-only dropleft v-model="transaction.date"></b-form-datepicker>
+                    </div>
+                  <!-- </b-col> -->
                 </b-row>
-                  <!-- <b-form-input
-                    
-                  type="text"
-                  name="expense-date"
-                  id="expense-category"
-                  class="expense-date"
-                  disabled
-                  :placeholder="formattedDate"
-                /> -->
+                
               </b-col>
             </b-row>
-            <!-- <b-row>
-              <b-col class="form-labels">
-                <label for="expense-spent-by" v-if="transaction.type==='expense'">Spent By</label>
-                <label for="expense-spent-by" v-else>Earned By</label>
-              </b-col>
-              <b-col>
-                <b-form-input
-                  
-                  type="text"
-                  name="expense-spent-by"
-                  id="expense-spent-by"
-                  class="form-text-box"
-                  v-model="transaction.to"
-                />
-              </b-col>
-            </b-row> -->
           </b-container>
           
           <div class="action-buttons">
@@ -171,7 +132,7 @@ export default {
         console.log(this.transaction);
         
         
-        this.transaction.date = this.transaction.date.toISOString();
+        this.transaction.date = this.transaction.date.getTime();
         this.transaction.created = Date.now();
         this.transaction.value = parseFloat(this.transaction.value, 10);
 
@@ -220,6 +181,9 @@ export default {
 </script>
 
 <style scoped>
+.transactions {
+  padding: 1px;
+}
 #expense-date{
     display: none;
 }
@@ -232,9 +196,7 @@ export default {
 .expense-date-picker{
   width: 70%;
 }
-.transactions {
-  padding: 1px;
-}
+
 .heading {
   padding: 2%;
   text-align: center;
@@ -245,11 +207,7 @@ export default {
   height: 30px;
   width: 30px;
 }
-.form-text-box {
-  /* margin-left: 2px;
-  background: white;
-  border: orange 0.25px solid; */
-}
+
 .action-buttons {
   display: flex;
   padding: 1px;
@@ -263,12 +221,12 @@ export default {
 .form-container-expense {
   margin-left: auto;
   margin-right: auto;
-  width: 50%;
+  width: 80%;
   text-align: center;
 }
-.form-container-expense > input {
+/* .form-container-expense > input {
     border:solid 1px orange;
-  }
+  } */
 .form-wrapper {
   border: 0.5px solid lightgray;
   border-radius: 10px;
@@ -291,5 +249,11 @@ export default {
 .date-box{
   padding: 2px;
   height: 45px;
+}
+.date-align{
+    position: relative;
+    /* width: 100%; */
+    padding-right: 15px;
+    padding-left: 15px;
 }
 </style>

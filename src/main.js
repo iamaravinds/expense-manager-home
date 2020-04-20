@@ -19,7 +19,6 @@ firebase.auth.onAuthStateChanged(function(user) {
     })
     .then(() => {
       console.log("USER: ",store.state.user);
-      // router.push({ path: '/records' });
      });
 
   } else {
