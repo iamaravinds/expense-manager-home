@@ -1,7 +1,7 @@
 <template>
 <b-container>
   <b-navbar toggleable="lg" type="dark" variant="dark">
-    <b-navbar-brand to="/">Expense Manager Home</b-navbar-brand>
+    <b-navbar-brand :to="routingPageData">Expense Manager Home</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -12,8 +12,8 @@
           <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
         </b-nav-form> -->
         <b-nav-item to="/about">About</b-nav-item>
-        <b-nav-item href="#">Profile</b-nav-item>
-        <b-nav-item to="/" v-if="getCurrentUser" @click="signOut">Sign Out</b-nav-item>
+        <b-nav-item  v-if="getCurrentUser">Profile</b-nav-item>
+        <b-nav-item :to="routingPageData" v-if="getCurrentUser" @click="signOut">Sign Out</b-nav-item>
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -28,14 +28,28 @@ export default {
       ...mapGetters([
       'getCurrentUser'
       // ...
-    ])
+    ]),
+    },
+    watch:{
+      getCurrentUser() {
+        this.updateRoutingPage()
+      }
+    },
+    data() {
+      return {
+        routingPageData:'/'
+      }
     },
     methods: {
       async signOut() {
         const response = await this.$dbService.User.userSignOut();
         console.log(response);
         
-      }
+      },
+      updateRoutingPage() {
+        if(this.getCurrentUser !== null) this.routingPageData = '/records';
+        else this.routingPageData = '/';
+    }
     }
 }
 </script>

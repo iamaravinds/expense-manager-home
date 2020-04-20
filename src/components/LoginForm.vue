@@ -94,7 +94,7 @@
             </b-form-group>
             <b-form-group
                 id="input-group-3">
-               <b-button variant="faded" class="login-buttons" @click="mode = 'signin'">Login</b-button>
+               <!-- <b-button variant="faded" class="login-buttons" @click="mode = 'signin'">Login</b-button> -->
                <b-button variant="faded" class="login-buttons" @click="signUp">SignUp</b-button>
             </b-form-group>
         </b-form>
@@ -156,6 +156,7 @@ export default {
                text: "Please login now"
              });
          }
+        this.mode = 'signin';
       },
       async signIn() {
         if(this.user.password) {
