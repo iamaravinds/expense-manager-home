@@ -31,6 +31,7 @@ exports.createUser = functions.https.onCall((data, context) => {
     try {
         return new Promise(async (resolve, reject) => {
             const { firstName, lastName, email, password, uid } = data;
+            console.log(data);
             let existingUser = await emailAlreadyPresent(uid);
             if (existingUser) {
                 resolve("User Already Present");

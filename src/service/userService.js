@@ -8,6 +8,10 @@ class UserService extends FirebaseService {
         this.database = firebase.db.ref('users');
         this.functions = firebase.functions;
     }
+    getLoggedUser() {
+        return this.auth.currentUser ? this.auth.currentUser.toJSON() : null;
+    }
+
     async getUserData(uid) {
         const userDataRef = this.database.child(uid);
         const userData = await userDataRef.once('value').then(snap => snap.exists()? snap.val(): {});

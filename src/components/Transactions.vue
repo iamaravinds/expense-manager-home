@@ -15,7 +15,7 @@
           <b-container class="form-data">
             <b-row>
               <b-col class="form-labels">
-                <label for="expense-name">Expense </label>
+                <label for="expense-name">Title </label>
               </b-col>
               <b-col>
                 <b-form-input
@@ -29,7 +29,7 @@
             </b-row>
             <b-row>
               <b-col class="form-labels">
-                <label for="expense-value">Value</label>
+                <label for="expense-value">Amount</label>
               </b-col>
               <b-col>
                 <b-form-input
@@ -141,23 +141,24 @@ export default {
               this.transaction
             ).then( () => {
                 this.transaction = {};
-                this.$notify({
-                    group: "success",
-                    title: "Transaction Updated",
-                    text: "Transaction updated"
-                });
+                this.$bvToast.toast('Please login to access your account', {
+                  title: 'Transaction Updated',
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center',
+                  solid: true
+                })
                 this.$emit('updateClose');
             });
         } else {
-            const key = await this.$dbService.Transaction.addTransaction(
+            await this.$dbService.Transaction.addTransaction(
               this.transaction
-            ).then(value => {
-              return value;
-            });
-            this.$notify({
-              group: "success",
-              title: "Transaction Saved",
-              text: `Transaction saved with ID ${key}`
+            ).then(() => {
+              return this.$bvToast.toast('Transaction saved successfully' , {
+                  title: 'Transaction Saved',
+                  variant: 'primary',
+                  toaster: 'b-toaster-top-center',
+                  solid: true
+                })
             });
 
         }

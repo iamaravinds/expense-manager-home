@@ -13,19 +13,22 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 const firebase = FirebaseService.init();
 firebase.auth.onAuthStateChanged(function(user) {
+  console.log(user);
+  
   if (user) {
      console.log('User is signed in.');
-     store.dispatch('setCurrentUser',user).then(() => {
-    })
+     store.dispatch('setCurrentUser',user)
     .then(() => {
-      console.log("USER: ",store.state.user);
+      console.log("store.state.user in main.js ",store.state.user);
+      // router.push({name:'Records'});
      });
 
   } else {
-    store.dispatch('clearCurrentUser').then(() => {
+    store.dispatch('clearCurrentUser')
+    .then(() => {
       console.log('No user is signed in.');
-    })
-    router.push({ path: '/' });
+      // router.push({name:'Login'});
+    });
   }
 });
 
