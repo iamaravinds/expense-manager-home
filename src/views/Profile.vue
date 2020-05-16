@@ -2,10 +2,11 @@
 <MainLayout>
     <template slot="navBar"></template>
     <template slot="content">
-      <b-container class="profile-container">
-        <div>
-          Welcome {{`${getCurrentUser.firstName} ${getCurrentUser.lastName}`}}
-        </div>
+      <b-container class="profile-container" fluid>
+        <UserContainer
+        v-if="getCurrentUser"
+        :userData="getCurrentUser"
+        />
       </b-container>
     </template>
   </MainLayout>
@@ -14,10 +15,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import MainLayout from "@/layout/MainLayout.vue";
+import UserContainer from '@/components/UserContainer';
 export default {
     name: 'Profile',
       components: {
-      MainLayout
+      MainLayout,
+      UserContainer
     },
     computed:{
       ...mapGetters([

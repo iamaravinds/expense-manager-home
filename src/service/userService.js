@@ -20,6 +20,13 @@ class UserService extends FirebaseService {
         console.log(userData);
         return userData;
     }
+
+    async updateUserData(id, phone) {
+        const userDataRef = this.database.child(id);
+        const response = await userDataRef.child('phone').set(phone);
+        return response;
+        
+    }
     async signUp(data) {
         const createUser = this.functions. httpsCallable('createUser');
         const response = await createUser(data);
