@@ -14,7 +14,7 @@
         <b-container class="form-container-expense">
           <b-container class="form-data">
             <b-row>
-              <b-col class="form-labels">
+              <b-col sm="3" class="form-labels">
                 <label for="expense-name">Title </label>
               </b-col>
               <b-col>
@@ -28,7 +28,7 @@
               </b-col>
             </b-row>
             <b-row>
-              <b-col class="form-labels">
+              <b-col sm="3" class="form-labels">
                 <label for="expense-value">Amount</label>
               </b-col>
               <b-col>
@@ -43,7 +43,7 @@
               </b-col>
             </b-row>
             <b-row>
-              <b-col class="form-labels">
+              <b-col sm="3" class="form-labels">
                 <label for="expense-category">Category</label>
               </b-col>
               <b-col>
@@ -58,7 +58,7 @@
               </b-col>
             </b-row>
             <b-row>
-              <b-col class="form-labels">
+              <b-col sm="3" class="form-labels">
                 <label for="expense-date">Date</label>
               </b-col>
               <b-col>
