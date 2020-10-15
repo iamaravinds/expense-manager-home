@@ -15,7 +15,7 @@
             </b-col>
         </b-row> -->
 
-        <b-table-simple borderless="borderless" responsive>
+        <b-table-simple borderless="borderless" responsive dark>
             <b-tbody>
             <b-tr>
                 <b-th>Email</b-th>

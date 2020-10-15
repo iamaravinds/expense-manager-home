@@ -1,8 +1,8 @@
 <template>
-  <b-container>
+  <!-- <b-container> -->
     <div class="transactions">
       <b-form  v-on:submit.prevent class="form-wrapper">
-        <b-container class="heading">
+        <div class="heading">
           <b-form-radio-group
             v-model="transaction.type"
             :options="options"
@@ -10,10 +10,10 @@
             value-field="item"
             text-field="name"
           ></b-form-radio-group>
-        </b-container>
-        <b-container class="form-container-expense">
-          <b-container class="form-data">
-            <b-row>
+        </div>
+        <div class="form-container-expense">
+          <div class="form-data">
+            <b-row class="m-2">
               <b-col sm="3" class="form-labels">
                 <label for="expense-name">Title </label>
               </b-col>
@@ -24,10 +24,13 @@
                   id="expense-name"
                   class="form-text-box"
                   v-model="transaction.expenseName"
+                  placeholder="What did you spend on?"
+                  size="sm"
+                  autocomplete="off"
                 />
               </b-col>
             </b-row>
-            <b-row>
+            <b-row class="m-2">
               <b-col sm="3" class="form-labels">
                 <label for="expense-value">Amount</label>
               </b-col>
@@ -39,10 +42,13 @@
                   id="expense-value"
                   class="form-text-box"
                   v-model="transaction.value"
+                  placeholder="How much did you spend?"
+                  size="sm"
+                  autocomplete="off"
                 />
               </b-col>
             </b-row>
-            <b-row>
+            <b-row class="m-2">
               <b-col sm="3" class="form-labels">
                 <label for="expense-category">Category</label>
               </b-col>
@@ -54,25 +60,31 @@
                   id="expense-category"
                   class="form-text-box"
                   v-model="transaction.category"
+                  placeholder="eg: Travel, Food, Entertainment"
+                  size="sm"
+                  
                 />
               </b-col>
             </b-row>
-            <b-row>
+            <b-row class="m-2">
               <b-col sm="3" class="form-labels">
                 <label for="expense-date">Date</label>
               </b-col>
               <b-col>
                 <b-row class="date-box">
                   <!-- <b-col> -->
-                    <div class="date-align">
+                    <!-- <div class="date-align">
                       <b-form-datepicker value-as-date button-only dropleft v-model="transaction.date"></b-form-datepicker>
+                    </div> -->
+                    <div class="date-align">
+                      <input type="datetime-local" name="date" id="date" v-model="transaction.date" >
                     </div>
                   <!-- </b-col> -->
                 </b-row>
                 
               </b-col>
             </b-row>
-          </b-container>
+          </div>
           
           <div class="action-buttons">
             <div class="action-button">
@@ -83,10 +95,10 @@
               <b-button @click="clearData" variant="warning">Clear</b-button>
             </div>
           </div>
-        </b-container>
+        </div>
       </b-form >
     </div>
-  </b-container>
+  <!-- </b-container> -->
 </template>
 
 <script>
@@ -107,7 +119,8 @@ export default {
           { item: 'expense', name: 'Expense' }],
       transaction: {
         type: "expense"
-      }
+      },
+      dateObj: null
     };
   },
   props:{
@@ -128,6 +141,7 @@ export default {
         this.transaction.expenseName &&
         this.transaction.value
       ) {
+        this.transaction.date = new Date(this.transaction.date);
         this.transaction.by= this.getCurrentUser.id;
         console.log(this.transaction);
         
@@ -212,7 +226,7 @@ export default {
 .action-buttons {
   display: flex;
   padding: 1px;
-  align-content: center;
+  /* align-content: center; */
   margin-top: 5px;
 }
 
@@ -223,7 +237,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   width: 80%;
-  text-align: center;
+  /* text-align: center; */
 }
 /* .form-container-expense > input {
     border:solid 1px orange;
@@ -237,10 +251,9 @@ export default {
   margin-top: 20px;
   min-width: 276px;
   background: none;
-  box-shadow: 4px 4px darkgray;
 }
 .form-labels {
-  text-align: justify;
+  /* text-align: justify; */
   font-size: 16px;
 }
 .form-data {
