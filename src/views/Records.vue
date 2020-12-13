@@ -2,8 +2,7 @@
 <MainLayout>
   <template slot="navBar"></template>
   <template slot="content">
-    <!-- <b-container fluid> -->
-      <div>
+    <div>
       <b-tabs cache-lifetime="100" :options="{ useUrlFragment: false }" lazy card small pills justified>
         <b-tab title="Add Transactions">
           <Transactions />
@@ -12,8 +11,7 @@
           <ViewRecords />
         </b-tab>
       </b-tabs>
-      </div>
-    <!-- </b-container> -->
+    </div>
   </template>
 </MainLayout>
   
